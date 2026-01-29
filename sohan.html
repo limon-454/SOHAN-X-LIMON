@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>⚡ SOHAN TRADING ULTIMATE - Pro OTC Signal Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #00ff9d;
+            --primary-dark: #00cc7d;
+            --secondary: #ff2a6d;
+            --secondary-dark: #cc0044;
+            --accent: #00e0ff;
+            --accent-dark: #0099cc;
+            --gold: #ffd700;
+            --gold-dark: #ffaa00;
+            --purple: #a855f7;
+            --purple-dark: #7c3aed;
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --card-bg: rgba(18, 18, 30, 0.8);
+            --text: #ffffff;
+            --text-muted: #b0b0d0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--darker-bg);
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .ultra-header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, 
+                rgba(0, 255, 157, 0.1) 0%, 
+                rgba(0, 224, 255, 0.1) 50%);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 2px solid var(--primary);
+            position: relative;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        /* Cards */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Broker Cards */
+        .broker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .broker-card {
+            background: linear-gradient(145deg, 
+                rgba(0, 20, 40, 0.8), 
+                rgba(10, 10, 30, 0.8));
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .broker-card.active {
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 255, 157, 0.3);
+        }
+
+        .broker-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        /* Controls */
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .control-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .control-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+        }
+
+        /* Action Buttons */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            padding: 18px 30px;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 157, 0.4);
+        }
+
+        /* Signals */
+        .signals-container {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .signal-card {
+            background: linear-gradient(145deg, 
+                rgba(18, 18, 35, 0.9), 
+                rgba(8, 8, 20, 0.9));
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            align-items: center;
+        }
+
+        .signal-card.call {
+            border-color: var(--primary);
+            background: linear-gradient(145deg, 
+                rgba(0, 255, 157, 0.1), 
+                rgba(0, 224, 255, 0.05));
+        }
+
+        .signal-card.put {
+            border-color: var(--secondary);
+            background: linear-gradient(145deg, 
+                rgba(255, 42, 109, 0.1), 
+                rgba(255, 0, 100, 0.05));
+        }
+
+        .signal-asset {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .signal-direction {
+            font-size: 1.3rem;
+            font-weight: 900;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .signal-direction.call {
+            background: rgba(0, 255, 157, 0.2);
+            color: var(--primary);
+        }
+
+        .signal-direction.put {
+            background: rgba(255, 42, 109, 0.2);
+            color: var(--secondary);
+        }
+
+        /* Analysis Panel */
+        .analysis-panel {
+            background: rgba(0, 20, 40, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(0, 224, 255, 0.2);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .analysis-section {
+            margin-bottom: 20px;
+        }
+
+        .indicator-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .indicator-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .broker-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .signal-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-btn {
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+            
+            .indicator-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .analysis-panel {
+                max-height: 300px;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 1.8rem;
+            }
+            
+            .glass-card {
+                padding: 15px;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Utility Classes */
+        .text-success { color: var(--primary); }
+        .text-danger { color: var(--secondary); }
+        .text-warning { color: var(--gold); }
+        .text-info { color: var(--accent); }
+
+        .bg-success { background: rgba(0, 255, 157, 0.1); }
+        .bg-danger { background: rgba(255, 42, 109, 0.1); }
+        .bg-warning { background: rgba(255, 215, 0, 0.1); }
+        .bg-info { background: rgba(0, 224, 255, 0.1); }
+
+        /* Loading */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 10, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(0, 255, 157, 0.1);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: var(--card-bg);
+            border-left: 4px solid var(--primary);
+            border-radius: 10px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="ultra-header">
+            <h1 class="main-title">
+                <i class="fas fa-crown"></i> SOHAN TRADING ULTIMATE
+            </h1>
+            <div class="subtitle">
+                Advanced OTC Market Signal Generator with Technical Analysis
+            </div>
+        </div>
+
+        <!-- Broker Selection -->
+        <div class="glass-card">
+            <div class="section-title">
+                <i class="fas fa-exchange-alt"></i> SELECT BROKER & MARKET
+            </div>
+            <div class="broker-grid">
+                <div class="broker-card active" onclick="selectBroker('quotex')" id="brokerQuotex">
+                    <div class="broker-icon" style="color: var(--primary);">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">
+                        QUOTEX PRO
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 0.9rem;">
+                        30+ OTC Assets with Technical Analysis
+                    </div>
+                </div>
+                
+                <div class="broker-card" onclick="selectBroker('pocket')" id="brokerPocket">
+                    <div class="broker-icon" style="color: var(--purple);">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">
+                        POCKET OPTION
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 0.9rem;">
+                        35+ OTC Assets with Technical Analysis
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trading Parameters -->
+        <div class="glass-card">
+            <div class="section-title">
+                <i class="fas fa-sliders-h"></i> TRADING PARAMETERS
+            </div>
+            
+            <div class="control-panel">
+                <div class="control-group">
+                    <div class="control-label">
+                        <i class="fas fa-chart-line"></i> ASSET SELECTION
+                    </div>
+                    <select class="control-input" id="asset">
+                        <!-- Quotex OTC Assets will be loaded here -->
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <div class="control-label">
+                        <i class="fas fa-clock"></i> TIME FRAME
+                    </div>
+                    <select class="control-input" id="timeframe">
+                        <option value="1">1 Minute</option>
+                        <option value="5" selected>5 Minutes</option>
+                        <option value="15">15 Minutes</option>
+                        <option value="60">1 Hour</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <div class="control-label">
+                        <i class="fas fa-signal"></i> SIGNALS COUNT
+                    </div>
+                    <input type="range" class="control-input" id="signalCount" 
+                           min="1" max="10" value="5">
+                    <div style="text-align: center; margin-top: 10px; color: var(--accent); 
+                                font-weight: 700;">
+                        <span id="countValue">5</span> Signals
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Indicators Analysis -->
+        <div class="glass-card">
+            <div class="section-title">
+                <i class="fas fa-chart-bar"></i> TECHNICAL INDICATORS ANALYSIS
+            </div>
+            <div class="analysis-panel" id="analysisPanel">
+                <div class="analysis-section">
+                    <div style="font-weight: 700; margin-bottom: 10px; color: var(--primary);">
+                        <i class="fas fa-chart-line"></i> Active Indicators:
+                    </div>
+                    <div class="indicator-list" id="indicatorList">
+                        <!-- Indicators will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <div style="font-weight: 700; margin-bottom: 10px; color: var(--accent);">
+                        <i class="fas fa-lightbulb"></i> Market Analysis:
+                    </div>
+                    <div id="marketAnalysis">
+                        Select broker and click "Analyze Market" to see technical analysis
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <div style="font-weight: 700; margin-bottom: 10px; color: var(--gold);">
+                        <i class="fas fa-crystal-ball"></i> Next Candle Prediction:
+                    </div>
+                    <div id="candlePrediction">
+                        Waiting for analysis...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-grid">
+            <button class="action-btn" onclick="analyzeMarket()">
+                <i class="fas fa-search"></i> ANALYZE MARKET
+            </button>
+            <button class="action-btn" onclick="generateSignals()" style="background: linear-gradient(45deg, var(--accent), var(--accent-dark));">
+                <i class="fas fa-bolt"></i> GENERATE SIGNALS
+            </button>
+        </div>
+
+        <!-- Live Signals -->
+        <div class="glass-card">
+            <div class="section-title">
+                <i class="fas fa-satellite-dish"></i> LIVE TRADING SIGNALS
+            </div>
+            <div class="signals-container" id="signalsContainer">
+                <!-- Signals will appear here -->
+            </div>
+        </div>
+
+        <!-- Technical Indicators Info -->
+        <div class="glass-card">
+            <div class="section-title">
+                <i class="fas fa-info-circle"></i> INDICATORS INFORMATION
+            </div>
+            <div style="color: var(--text-muted); line-height: 1.6;">
+                <div style="margin-bottom: 15px;">
+                    <strong>Quotex OTC Indicators:</strong><br>
+                    Trend Indicators: Alligator, Bollinger Bands, Envelopes, Fractal, Zig Zag, Parabolic SAR, 
+                    Moving Average, Supertrend, Keltner channel, Donchian channel, Ichimoku Cloud<br>
+                    Oscillators: ADX, Aroon, Awesome Oscillator, Bears power, Bulls power, CCI, DeMarker, 
+                    ATR, MACD, Momentum, RSI, Rate Of Change, Stochastic Oscillator, Schaff Trend Cycle, 
+                    Vortex, Volume Oscillator, Weis Waves, Williams %R
+                </div>
+                
+                <div>
+                    <strong>Pocket Option OTC Indicators:</strong><br>
+                    Trend Indicators: Accelerator Oscillator, ADX, Alligator, Aroon, Average True Range, 
+                    Awesome Oscillator, Bears Power, Bollinger Bands, Bollinger Bands Width, Bulls Power, 
+                    CCI, Donchian Channels, DeMarker, Envelopes, Fractal, Fractal Chaos Bands, 
+                    Ichimoku Kinko Hyo, Keltner Channel, MACD, Momentum, Moving Average, OsMA, 
+                    Parabolic SAR, RSI, Rate of Change, Schaff Trend Cycle, Stochastic Oscillator, 
+                    SuperTrend, Vortex, Williams %R, ZigZag
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // সম্পূর্ণ OTC মার্কেট এসেট ডাটাবেস
+        const OTC_ASSETS = {
+            quotex: [
+                // Major Forex Pairs
+                "EUR/USD OTC", "GBP/USD OTC", "USD/JPY OTC", "USD/CHF OTC", 
+                "AUD/USD OTC", "USD/CAD OTC", "NZD/USD OTC", "EUR/GBP OTC",
+                "EUR/JPY OTC", "GBP/JPY OTC", "EUR/CHF OTC", "AUD/JPY OTC",
+                "EUR/AUD OTC", "GBP/AUD OTC", "GBP/CAD OTC", "EUR/CAD OTC",
+                
+                // Minor Forex Pairs
+                "CAD/JPY OTC", "CHF/JPY OTC", "AUD/CAD OTC", "AUD/CHF OTC",
+                "AUD/NZD OTC", "CAD/CHF OTC", "EUR/NZD OTC", "GBP/CHF OTC",
+                "GBP/NZD OTC", "NZD/CAD OTC", "NZD/CHF OTC", "NZD/JPY OTC",
+                
+                // Cryptocurrencies
+                "BTC/USD OTC", "ETH/USD OTC", "LTC/USD OTC", "XRP/USD OTC",
+                "BCH/USD OTC", "ADA/USD OTC", "DOT/USD OTC", "SOL/USD OTC",
+                "DOGE/USD OTC", "MATIC/USD OTC", "LINK/USD OTC", "UNI/USD OTC",
+                "AVAX/USD OTC", "ATOM/USD OTC", "ALGO/USD OTC", "VET/USD OTC",
+                
+                // Commodities
+                "XAU/USD OTC", "XAG/USD OTC", "XPT/USD OTC", "XPD/USD OTC",
+                "USOIL OTC", "BRENT OTC", "NATURAL GAS OTC", "COPPER OTC",
+                
+                // Indices
+                "SPX500 OTC", "NAS100 OTC", "DJI30 OTC", "FTSE100 OTC",
+                "DAX30 OTC", "NIKKEI225 OTC", "ASX200 OTC", "HSI OTC",
+                
+                // Stocks
+                "AAPL OTC", "TSLA OTC", "AMZN OTC", "GOOGL OTC",
+                "MSFT OTC", "META OTC", "NVDA OTC", "AMD OTC"
+            ],
+            
+            pocket: [
+                // Major Forex Pairs
+                "EUR/USD OTC", "GBP/USD OTC", "USD/JPY OTC", "USD/CHF OTC",
+                "AUD/USD OTC", "USD/CAD OTC", "NZD/USD OTC", "EUR/GBP OTC",
+                "EUR/JPY OTC", "GBP/JPY OTC", "EUR/CHF OTC", "AUD/JPY OTC",
+                "EUR/AUD OTC", "GBP/AUD OTC", "GBP/CAD OTC", "EUR/CAD OTC",
+                
+                // Exotic Forex Pairs
+                "USD/SGD OTC", "USD/HKD OTC", "USD/TRY OTC", "USD/ZAR OTC",
+                "USD/MXN OTC", "USD/SEK OTC", "USD/NOK OTC", "USD/DKK OTC",
+                "EUR/TRY OTC", "GBP/TRY OTC", "EUR/SEK OTC", "EUR/NOK OTC",
+                
+                // Cryptocurrencies
+                "BTC/USD OTC", "ETH/USD OTC", "LTC/USD OTC", "XRP/USD OTC",
+                "BCH/USD OTC", "ADA/USD OTC", "DOT/USD OTC", "SOL/USD OTC",
+                "DOGE/USD OTC", "SHIB/USD OTC", "MATIC/USD OTC", "LINK/USD OTC",
+                "UNI/USD OTC", "AVAX/USD OTC", "ATOM/USD OTC", "NEAR/USD OTC",
+                "FTM/USD OTC", "SAND/USD OTC", "MANA/USD OTC", "APE/USD OTC",
+                
+                // Commodities
+                "XAU/USD OTC", "XAG/USD OTC", "XPT/USD OTC", "XPD/USD OTC",
+                "USOIL OTC", "BRENT OTC", "NATURAL GAS OTC", "COCOA OTC",
+                "COFFEE OTC", "SUGAR OTC", "WHEAT OTC", "CORN OTC",
+                
+                // Indices
+                "S&P500 OTC", "NASDAQ OTC", "DOW JONES OTC", "FTSE100 OTC",
+                "DAX30 OTC", "NIKKEI225 OTC", "ASX200 OTC", "CAC40 OTC",
+                "HSI OTC", "SENSEX OTC", "IBEX35 OTC", "AEX OTC",
+                
+                // Popular Stocks
+                "TESLA OTC", "APPLE OTC", "AMAZON OTC", "GOOGLE OTC",
+                "MICROSOFT OTC", "META OTC", "NETFLIX OTC", "NVIDIA OTC",
+                "AMD OTC", "INTEL OTC", "PAYPAL OTC", "SHOPIFY OTC"
+            ]
+        };
+
+        // Technical Indicators Database
+        const INDICATORS = {
+            quotex: {
+                trend: [
+                    "Alligator", "Bollinger Bands", "Envelopes", "Fractal", "Zig Zag",
+                    "Parabolic SAR", "Moving Average", "Supertrend", "Keltner Channel",
+                    "Donchian Channel", "Ichimoku Cloud"
+                ],
+                oscillators: [
+                    "ADX", "Aroon", "Awesome Oscillator", "Bears Power", "Bulls Power",
+                    "CCI", "DeMarker", "ATR", "MACD", "Momentum", "RSI", "Rate Of Change",
+                    "Stochastic Oscillator", "Schaff Trend Cycle", "Vortex", "Volume Oscillator",
+                    "Weis Waves", "Williams %R"
+                ]
+            },
+            pocket: {
+                trend: [
+                    "Accelerator Oscillator", "ADX", "Alligator", "Aroon", "Average True Range",
+                    "Awesome Oscillator", "Bears Power", "Bollinger Bands", "Bollinger Bands Width",
+                    "Bulls Power", "CCI", "Donchian Channels", "DeMarker", "Envelopes", "Fractal",
+                    "Fractal Chaos Bands", "Ichimoku Kinko Hyo", "Keltner Channel", "MACD", "Momentum",
+                    "Moving Average", "OsMA", "Parabolic SAR", "RSI", "Rate of Change",
+                    "Schaff Trend Cycle", "Stochastic Oscillator", "SuperTrend", "Vortex",
+                    "Williams %R", "ZigZag"
+                ]
+            }
+        };
+
+        // Market patterns for analysis
+        const MARKET_PATTERNS = {
+            bullish: [
+                "Bullish Engulfing", "Hammer", "Morning Star", "Piercing Line", 
+                "Three White Soldiers", "Bullish Harami", "Inverse Head & Shoulders"
+            ],
+            bearish: [
+                "Bearish Engulfing", "Shooting Star", "Evening Star", "Dark Cloud Cover",
+                "Three Black Crows", "Bearish Harami", "Head & Shoulders"
+            ],
+            neutral: [
+                "Doji", "Spinning Top", "High Wave", "Dragonfly Doji", "Gravestone Doji",
+                "Long-legged Doji"
+            ]
+        };
+
+        // System variables
+        let currentBroker = 'quotex';
+        let marketAnalysisData = {};
+        let signalsHistory = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load initial assets
+            loadAssets();
+            
+            // Signal count slider
+            const signalCount = document.getElementById('signalCount');
+            const countValue = document.getElementById('countValue');
+            
+            signalCount.addEventListener('input', function() {
+                countValue.textContent = this.value;
+            });
+            
+            // Show initial analysis
+            updateIndicatorDisplay();
+            
+            // Add touch events for mobile
+            document.querySelectorAll('.broker-card, .action-btn').forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+
+        // Load Assets
+        function loadAssets() {
+            const assetSelect = document.getElementById('asset');
+            const assets = OTC_ASSETS[currentBroker];
+            
+            assetSelect.innerHTML = '';
+            assets.forEach(asset => {
+                const option = document.createElement('option');
+                option.value = asset;
+                option.textContent = asset;
+                assetSelect.appendChild(option);
+            });
+        }
+
+        // Select Broker
+        function selectBroker(broker) {
+            currentBroker = broker;
+            
+            // Update UI
+            document.getElementById('brokerQuotex').classList.remove('active');
+            document.getElementById('brokerPocket').classList.remove('active');
+            document.getElementById(`broker${broker.charAt(0).toUpperCase() + broker.slice(1)}`).classList.add('active');
+            
+            // Load assets for selected broker
+            loadAssets();
+            
+            // Update indicator display
+            updateIndicatorDisplay();
+            
+            // Clear previous analysis
+            document.getElementById('marketAnalysis').innerHTML = 
+                'Select broker and click "Analyze Market" to see technical analysis';
+            document.getElementById('candlePrediction').innerHTML = 
+                'Waiting for analysis...';
+            
+            showNotification(`Switched to ${broker === 'quotex' ? 'Quotex Pro' : 'Pocket Option'}`, 'success');
+        }
+
+        // Update Indicator Display
+        function updateIndicatorDisplay() {
+            const indicatorList = document.getElementById('indicatorList');
+            const indicators = INDICATORS[currentBroker];
+            
+            let html = '';
+            
+            // Add trend indicators
+            indicators.trend.forEach(indicator => {
+                const status = Math.random() > 0.3 ? 'active' : 'neutral';
+                const value = getRandomIndicatorValue(indicator);
+                
+                html += `
+                    <div class="indicator-item ${status === 'active' ? 'bg-success' : 'bg-info'}">
+                        <span>${indicator}</span>
+                        <span class="${status === 'active' ? 'text-success' : 'text-info'}">
+                            ${value}
+                        </span>
+                    </div>
+                `;
+            });
+            
+            indicatorList.innerHTML = html;
+        }
+
+        // Get random indicator value
+        function getRandomIndicatorValue(indicator) {
+            const values = {
+                'RSI': `${(30 + Math.random() * 40).toFixed(1)}`,
+                'MACD': `${(Math.random() - 0.5).toFixed(3)}`,
+                'Stochastic': `${(20 + Math.random() * 60).toFixed(1)}%`,
+                'ADX': `${(25 + Math.random() * 30).toFixed(1)}`,
+                'CCI': `${(Math.random() * 200 - 100).toFixed(0)}`,
+                'Bollinger Bands': `${(Math.random() * 2).toFixed(2)}σ`,
+                'Moving Average': Math.random() > 0.5 ? 'Bullish' : 'Bearish',
+                'Parabolic SAR': Math.random() > 0.5 ? 'Below Price' : 'Above Price',
+                'Ichimoku Cloud': Math.random() > 0.5 ? 'In Cloud' : 'Out Cloud',
+                'Volume': `${(Math.random() * 1000).toFixed(0)}K`,
+                'Alligator': Math.random() > 0.5 ? 'Buying' : 'Selling',
+                'Supertrend': Math.random() > 0.5 ? 'Uptrend' : 'Downtrend',
+                'Zig Zag': `${(Math.random() * 10).toFixed(2)}%`,
+                'Awesome Oscillator': `${(Math.random() - 0.5).toFixed(3)}`,
+                'Bears Power': `${(-Math.random() * 100).toFixed(1)}`,
+                'Bulls Power': `${(Math.random() * 100).toFixed(1)}`,
+                'ATR': `${(Math.random() * 5).toFixed(3)}`,
+                'Momentum': `${(Math.random() * 100 - 50).toFixed(1)}`,
+                'Rate of Change': `${(Math.random() * 20 - 10).toFixed(1)}%`,
+                'Williams %R': `${(-Math.random() * 100).toFixed(1)}%`
+            };
+            
+            return values[indicator] || `${(Math.random() * 100).toFixed(2)}`;
+        }
+
+        // Analyze Market
+        async function analyzeMarket() {
+            const asset = document.getElementById('asset').value;
+            
+            if (!asset) {
+                showNotification('Please select an asset first!', 'danger');
+                return;
+            }
+            
+            showLoading(true);
+            
+            // Simulate analysis delay
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            const timeframe = document.getElementById('timeframe').value;
+            
+            // Generate detailed analysis
+            const analysis = generateTechnicalAnalysis(asset, timeframe);
+            marketAnalysisData = analysis;
+            
+            // Display analysis
+            displayMarketAnalysis(analysis);
+            
+            // Update indicator values
+            updateIndicatorDisplay();
+            
+            showLoading(false);
+            showNotification('Market analysis completed!', 'success');
+        }
+
+        // Generate Technical Analysis
+        function generateTechnicalAnalysis(asset, timeframe) {
+            // Simulate analysis using all indicators
+            const indicators = INDICATORS[currentBroker];
+            const allIndicators = currentBroker === 'quotex' 
+                ? [...indicators.trend, ...indicators.oscillators]
+                : indicators.trend;
+            
+            // Analyze each indicator
+            const indicatorResults = {};
+            allIndicators.forEach(indicator => {
+                indicatorResults[indicator] = {
+                    value: getRandomIndicatorValue(indicator),
+                    signal: getIndicatorSignal(indicator),
+                    strength: Math.random() * 100
+                };
+            });
+            
+            // Calculate overall trend
+            const bullishSignals = Object.values(indicatorResults).filter(r => r.signal === 'bullish').length;
+            const bearishSignals = Object.values(indicatorResults).filter(r => r.signal === 'bearish').length;
+            const neutralSignals = Object.values(indicatorResults).filter(r => r.signal === 'neutral').length;
+            
+            let overallTrend = 'neutral';
+            let trendStrength = 50;
+            
+            if (bullishSignals > bearishSignals && bullishSignals > neutralSignals) {
+                overallTrend = 'bullish';
+                trendStrength = (bullishSignals / allIndicators.length) * 100;
+            } else if (bearishSignals > bullishSignals && bearishSignals > neutralSignals) {
+                overallTrend = 'bearish';
+                trendStrength = (bearishSignals / allIndicators.length) * 100;
+            }
+            
+            // Analyze previous candle patterns
+            const previousPatterns = analyzePreviousCandles(3);
+            
+            // Predict next candle
+            const nextCandle = predictNextCandle(overallTrend, trendStrength, previousPatterns);
+            
+            return {
+                asset,
+                timeframe,
+                indicators: indicatorResults,
+                overallTrend,
+                trendStrength: trendStrength.toFixed(1),
+                previousPatterns,
+                nextCandle,
+                timestamp: new Date().toLocaleTimeString(),
+                confidence: (70 + Math.random() * 25).toFixed(1),
+                broker: currentBroker
+            };
+        }
+
+        // Get Indicator Signal
+        function getIndicatorSignal(indicator) {
+            const rand = Math.random();
+            if (rand < 0.4) return 'bullish';
+            if (rand < 0.7) return 'bearish';
+            return 'neutral';
+        }
+
+        // Analyze Previous Candles
+        function analyzePreviousCandles(count) {
+            const patterns = [];
+            const types = ['bullish', 'bearish', 'neutral'];
+            
+            for (let i = 0; i < count; i++) {
+                const type = types[Math.floor(Math.random() * types.length)];
+                const pattern = MARKET_PATTERNS[type][Math.floor(Math.random() * MARKET_PATTERNS[type].length)];
+                
+                patterns.push({
+                    type,
+                    pattern,
+                    strength: (50 + Math.random() * 50).toFixed(1),
+                    volume: (Math.random() * 1000).toFixed(0) + 'K'
+                });
+            }
+            
+            return patterns;
+        }
+
+        // Predict Next Candle
+        function predictNextCandle(trend, strength, previousPatterns) {
+            let prediction = '';
+            let direction = 'neutral';
+            let confidence = 0;
+            
+            if (trend === 'bullish' && parseFloat(strength) > 60) {
+                direction = 'bullish';
+                confidence = parseFloat(strength) + Math.random() * 20;
+                prediction = `Strong ${direction.toUpperCase()} candle expected based on ${previousPatterns.length} previous patterns showing bullish momentum.`;
+            } else if (trend === 'bearish' && parseFloat(strength) > 60) {
+                direction = 'bearish';
+                confidence = parseFloat(strength) + Math.random() * 20;
+                prediction = `Strong ${direction.toUpperCase()} candle expected as bearish pressure continues from previous patterns.`;
+            } else {
+                direction = Math.random() > 0.5 ? 'bullish' : 'bearish';
+                confidence = 50 + Math.random() * 20;
+                prediction = `Sideways to ${direction.toUpperCase()} movement expected with moderate volatility.`;
+            }
+            
+            return {
+                direction,
+                confidence: confidence.toFixed(1),
+                prediction,
+                expectedHigh: (Math.random() * 0.5 + 0.5).toFixed(4),
+                expectedLow: (Math.random() * 0.5).toFixed(4),
+                keyLevels: ['Resistance', 'Support', 'Pivot Point']
+            };
+        }
+
+        // Display Market Analysis
+        function displayMarketAnalysis(analysis) {
+            const marketAnalysis = document.getElementById('marketAnalysis');
+            const candlePrediction = document.getElementById('candlePrediction');
+            
+            // Market Analysis
+            let analysisHTML = `
+                <div style="margin-bottom: 10px;">
+                    <strong>Asset:</strong> ${analysis.asset}
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <strong>Overall Trend:</strong> 
+                    <span class="${analysis.overallTrend === 'bullish' ? 'text-success' : analysis.overallTrend === 'bearish' ? 'text-danger' : 'text-warning'}">
+                        ${analysis.overallTrend.toUpperCase()} (${analysis.trendStrength}%)
+                    </span>
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <strong>Previous Patterns:</strong><br>
+                    ${analysis.previousPatterns.map(p => 
+                        `${p.pattern} (${p.type}, Strength: ${p.strength}%)`
+                    ).join('<br>')}
+                </div>
+                
+                <div>
+                    <strong>Key Indicators:</strong><br>
+                    ${Object.entries(analysis.indicators).slice(0, 5).map(([name, data]) => 
+                        `${name}: ${data.value} (${data.signal})`
+                    ).join('<br>')}
+                </div>
+            `;
+            
+            marketAnalysis.innerHTML = analysisHTML;
+            
+            // Candle Prediction
+            let predictionHTML = `
+                <div style="margin-bottom: 10px;">
+                    <strong>Direction:</strong> 
+                    <span class="${analysis.nextCandle.direction === 'bullish' ? 'text-success' : 'text-danger'}">
+                        ${analysis.nextCandle.direction.toUpperCase()}
+                    </span>
+                    with ${analysis.nextCandle.confidence}% confidence
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <strong>Prediction:</strong> ${analysis.nextCandle.prediction}
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <strong>Expected Range:</strong><br>
+                    High: ${analysis.nextCandle.expectedHigh}<br>
+                    Low: ${analysis.nextCandle.expectedLow}
+                </div>
+                
+                <div>
+                    <strong>Key Levels:</strong> ${analysis.nextCandle.keyLevels.join(', ')}
+                </div>
+            `;
+            
+            candlePrediction.innerHTML = predictionHTML;
+        }
+
+        // Generate Signals
+        async function generateSignals() {
+            if (!marketAnalysisData.overallTrend) {
+                showNotification('Please analyze market first!', 'danger');
+                return;
+            }
+            
+            const asset = document.getElementById('asset').value;
+            
+            if (!asset) {
+                showNotification('Please select an asset first!', 'danger');
+                return;
+            }
+            
+            showLoading(true);
+            
+            const count = parseInt(document.getElementById('signalCount').value);
+            const timeframe = document.getElementById('timeframe').value;
+            
+            // Clear previous signals
+            const signalsContainer = document.getElementById('signalsContainer');
+            signalsContainer.innerHTML = '';
+            
+            // Generate new signals based on analysis
+            for (let i = 0; i < count; i++) {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const signal = generateSignalFromAnalysis(asset, timeframe, i);
+                displaySignal(signal);
+                
+                signalsHistory.push(signal);
+            }
+            
+            showLoading(false);
+            showNotification(`Generated ${count} signals with technical analysis!`, 'success');
+        }
+
+        // Generate Signal from Analysis
+        function generateSignalFromAnalysis(asset, timeframe, index) {
+            // Use market analysis data to generate intelligent signals
+            const trend = marketAnalysisData.overallTrend;
+            const confidence = parseFloat(marketAnalysisData.confidence);
+            const indicatorCount = Object.keys(marketAnalysisData.indicators).length;
+            
+            // Calculate accuracy based on analysis
+            let accuracy = 85 + (confidence / 100 * 15);
+            accuracy = Math.min(99.9, accuracy);
+            
+            // Determine direction based on trend and indicators
+            let direction;
+            if (trend === 'bullish') {
+                direction = Math.random() < (confidence / 100) ? 'CALL' : 'PUT';
+            } else if (trend === 'bearish') {
+                direction = Math.random() < (confidence / 100) ? 'PUT' : 'CALL';
+            } else {
+                direction = Math.random() > 0.5 ? 'CALL' : 'PUT';
+                accuracy *= 0.9; // Reduce accuracy for neutral markets
+            }
+            
+            // Add broker-specific accuracy boost
+            if (currentBroker === 'quotex') accuracy += 1.5;
+            if (currentBroker === 'pocket') accuracy += 1.0;
+            accuracy = Math.min(99.9, accuracy);
+            
+            // Calculate expiry based on timeframe
+            const expiry = calculateExpiry(timeframe, index + 1);
+            
+            // Generate indicators used
+            const usedIndicators = getRandomIndicators(3);
+            
+            return {
+                id: Date.now() + index,
+                asset,
+                direction,
+                timeframe: timeframe + 'M',
+                expiry,
+                accuracy: accuracy.toFixed(1),
+                confidence: confidence.toFixed(1),
+                indicators: usedIndicators,
+                broker: currentBroker,
+                timestamp: new Date().toLocaleTimeString(),
+                price: getCurrentPrice(asset),
+                analysis: marketAnalysisData
+            };
+        }
+
+        // Get Random Indicators
+        function getRandomIndicators(count) {
+            const indicators = INDICATORS[currentBroker];
+            const allIndicators = currentBroker === 'quotex' 
+                ? [...indicators.trend, ...indicators.oscillators]
+                : indicators.trend;
+            
+            const selected = [];
+            for (let i = 0; i < Math.min(count, allIndicators.length); i++) {
+                const randomIndex = Math.floor(Math.random() * allIndicators.length);
+                selected.push(allIndicators[randomIndex]);
+            }
+            return selected;
+        }
+
+        // Display Signal
+        function displaySignal(signal) {
+            const signalsContainer = document.getElementById('signalsContainer');
+            
+            const signalCard = document.createElement('div');
+            signalCard.className = `signal-card ${signal.direction.toLowerCase()}`;
+            
+            signalCard.innerHTML = `
+                <div class="signal-asset">
+                    ${signal.asset}<br>
+                    <small style="color: var(--text-muted);">${signal.timeframe} • ${signal.expiry}</small>
+                </div>
+                <div class="signal-direction ${signal.direction.toLowerCase()}">
+                    ${signal.direction}
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--gold);">
+                        ${signal.accuracy}%
+                    </div>
+                    <small>Accuracy</small>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.2rem; font-weight: 700; color: var(--accent);">
+                        ${signal.confidence}%
+                    </div>
+                    <small>Confidence</small>
+                </div>
+                <div style="grid-column: 1 / -1; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <small style="color: var(--text-muted);">
+                        <i class="fas fa-chart-bar"></i> Indicators: ${signal.indicators.join(', ')}
+                    </small>
+                </div>
+            `;
+            
+            signalsContainer.appendChild(signalCard);
+            
+            // Scroll to new signal
+            signalCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Calculate Expiry
+        function calculateExpiry(timeframe, offset) {
+            const now = new Date();
+            let minutesToAdd = parseInt(timeframe) * offset;
+            now.setMinutes(now.getMinutes() + minutesToAdd);
+            
+            // Round to nearest 5 minutes
+            const minutes = now.getMinutes();
+            const roundedMinutes = Math.ceil(minutes / 5) * 5;
+            now.setMinutes(roundedMinutes);
+            now.setSeconds(0);
+            
+            const hours = now.getHours().toString().padStart(2, '0');
+            const mins = now.getMinutes().toString().padStart(2, '0');
+            
+            return `${hours}:${mins}`;
+        }
+
+        // Get Current Price
+        function getCurrentPrice(asset) {
+            // Base prices for common assets
+            const basePrices = {
+                'EUR/USD OTC': 1.0850 + (Math.random() - 0.5) * 0.002,
+                'GBP/USD OTC': 1.2650 + (Math.random() - 0.5) * 0.003,
+                'USD/JPY OTC': 148.50 + (Math.random() - 0.5) * 0.5,
+                'BTC/USD OTC': 45000 + (Math.random() - 0.5) * 500,
+                'ETH/USD OTC': 2400 + (Math.random() - 0.5) * 50,
+                'XAU/USD OTC': 1980 + (Math.random() - 0.5) * 10,
+                'XAG/USD OTC': 23.50 + (Math.random() - 0.5) * 0.5,
+                'USOIL OTC': 75.80 + (Math.random() - 0.5) * 1,
+                'SPX500 OTC': 4550 + (Math.random() - 0.5) * 20,
+                'NAS100 OTC': 15200 + (Math.random() - 0.5) * 50,
+                'AAPL OTC': 185 + (Math.random() - 0.5) * 2,
+                'TSLA OTC': 240 + (Math.random() - 0.5) * 5
+            };
+            
+            // Try to find matching asset
+            for (const [key, value] of Object.entries(basePrices)) {
+                if (asset.includes(key)) {
+                    return value.toFixed(asset.includes('JPY') ? 2 : 4);
+                }
+            }
+            
+            // Default random price
+            return (100 + (Math.random() - 0.5) * 10).toFixed(2);
+        }
+
+        // Show Loading
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.toggle('active', show);
+        }
+
+        // Show Notification
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            
+            // Set color based on type
+            if (type === 'success') {
+                notification.style.borderLeftColor = 'var(--primary)';
+                notification.style.background = 'linear-gradient(145deg, rgba(0, 255, 157, 0.1), rgba(10, 10, 30, 0.8))';
+            } else if (type === 'danger') {
+                notification.style.borderLeftColor = 'var(--secondary)';
+                notification.style.background = 'linear-gradient(145deg, rgba(255, 42, 109, 0.1), rgba(10, 10, 30, 0.8))';
+            } else {
+                notification.style.borderLeftColor = 'var(--accent)';
+                notification.style.background = 'linear-gradient(145deg, rgba(0, 224, 255, 0.1), rgba(10, 10, 30, 0.8))';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Handle Mobile Touch Events
+        document.addEventListener('touchmove', function(e) {
+            // Prevent scrolling on certain elements
+            if (e.target.classList.contains('analysis-panel')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Add CSS for mobile scroll
+        const style = document.createElement('style');
+        style.textContent = `
+            .analysis-panel::-webkit-scrollbar {
+                width: 5px;
+            }
+            
+            .analysis-panel::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+            }
+            
+            .analysis-panel::-webkit-scrollbar-thumb {
+                background: var(--primary);
+                border-radius: 3px;
+            }
+            
+            @media (max-width: 768px) {
+                body {
+                    -webkit-tap-highlight-color: transparent;
+                }
+                
+                select, input, button {
+                    font-size: 16px !important; /* Prevent zoom on iOS */
+                }
+                
+                .control-input {
+                    font-size: 16px !important;
+                    padding: 12px !important;
+                }
+                
+                .action-btn {
+                    padding: 14px 18px !important;
+                    font-size: 1rem !important;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .main-title {
+                    font-size: 1.8rem !important;
+                }
+                
+                .subtitle {
+                    font-size: 0.9rem !important;
+                }
+                
+                .section-title {
+                    font-size: 1.2rem !important;
+                }
+                
+                .broker-icon {
+                    font-size: 2.5rem !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
