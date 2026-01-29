@@ -1,6 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Telegram Web App সাপোর্ট -->
+<script>
+// Telegram Web App ডিটেক্ট করলে এই কোড কাজ করবে
+if (window.Telegram && Telegram.WebApp) {
+    const tg = Telegram.WebApp;
+    
+    // Telegram ডার্ক মোড অনুযায়ী কালার পরিবর্তন
+    if (tg.colorScheme === 'dark') {
+        document.documentElement.style.setProperty('--dark-bg', '#000000');
+        document.documentElement.style.setProperty('--darker-bg', '#0a0a0a');
+    } else {
+        document.documentElement.style.setProperty('--dark-bg', '#ffffff');
+        document.documentElement.style.setProperty('--darker-bg', '#f0f0f0');
+    }
+    
+    // অ্যাপটিকে ফুল স্ক্রিনে দেখাও
+    tg.expand();
+    
+    // Telegram ব্যাক বাটন শো করাও (ঐচ্ছিক)
+    // tg.BackButton.show();
+    // tg.BackButton.onClick(() => tg.close());
+    
+    console.log("Telegram Web App Mode Activated!");
+} else {
+    console.log("Running in normal browser mode");
+}
+</script>
     <meta charset="UTF-8">
     <title>⚡ SOHAN TRADING ULTIMATE - Pro OTC Signal Generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
